@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@nextui-org/react": "2.2.9",
+    "dotenv-cli": "^7.4.2",
     "framer-motion": "11.5.5",
     "next": "14.0.2",
+    "prisma": "^5.19.1",
     "react": "^18",
     "react-dom": "^18"
   },
