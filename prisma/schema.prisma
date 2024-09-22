@@ -54,7 +54,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Topic {
+model Project {
   id          String @id @default(cuid())
   slug        String @unique
   description String
@@ -65,17 +65,17 @@ model Topic {
 }
 
 model Post {
-  id      String @id @default(cuid())
-  title   String
-  content String
-  userId  String
-  topicId String
+  id        String @id @default(cuid())
+  title     String
+  content   String
+  userId    String
+  projectId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  topic    Topic     @relation(fields: [topicId], references: [id])
+  project  Project   @relation(fields: [projectId], references: [id])
   comments Comment[]
 }
 
