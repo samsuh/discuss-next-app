@@ -11,7 +11,7 @@ import {
 import * as actions from '@/actions'
 import { signOut as nextAuthSignOut, useSession } from 'next-auth/react'
 
-export default async function HeaderAuth() {
+export default function HeaderAuth() {
   const session = useSession()
 
   let authContent: React.ReactNode
