@@ -1,15 +1,43 @@
 import Link from 'next/link'
 import { auth } from '@/auth'
 import {
+  Avatar,
+  Button,
   Input,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from '@nextui-org/react'
+import * as actions from '@/actions'
 
 export default async function Header() {
   const session = await auth()
+
+  let authContent: React.ReactNode
+  if (session?.user) {
+    authContent = <Avatar src={session.user.image || ''} />
+  } else {
+    authContent = (
+      <>
+        <NavbarItem>
+          <form action={actions.signIn}>
+            <Button type="submit" color="secondary" variant="bordered">
+              Sign In
+            </Button>
+          </form>
+        </NavbarItem>
+        <NavbarItem>
+          <form action={actions.signOut}>
+            <Button type="submit" color="primary" variant="flat">
+              Sign Out
+            </Button>
+          </form>
+        </NavbarItem>
+      </>
+    )
+  }
+
   return (
     <Navbar>
       <NavbarBrand>
@@ -22,11 +50,7 @@ export default async function Header() {
           <Input />
         </NavbarItem>
       </NavbarContent>
-      <NavbarContent justify="end">
-        <NavbarItem>
-          {session?.user ? <div>Signed In</div> : <div>Signed Out</div>}
-        </NavbarItem>
-      </NavbarContent>
+      <NavbarContent justify="end">{authContent}</NavbarContent>
     </Navbar>
   )
 }
