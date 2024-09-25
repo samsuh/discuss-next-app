@@ -10,6 +10,7 @@ import {
   Textarea,
 } from '@nextui-org/react'
 import * as actions from '@/actions'
+import FormButton from '../common/form-button'
 
 export default function ProjectCreateForm() {
   const [formState, action] = useFormState(actions.createProject, {
@@ -45,7 +46,7 @@ export default function ProjectCreateForm() {
                 {formState.errors._form?.join(', ')}
               </div>
             ) : null}
-            <Button type="submit">Submit</Button>
+            <FormButton>Create Project</FormButton>
           </div>
         </form>
       </PopoverContent>
