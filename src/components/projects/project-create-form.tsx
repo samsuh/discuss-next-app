@@ -22,7 +22,7 @@ export default function ProjectCreateForm() {
         <Button color="primary">Create New Project</Button>
       </PopoverTrigger>
       <PopoverContent>
-        <form action={actions.createProject}>
+        <form action={action}>
           <div className="flex flex-col gap-4 p-4 w-80">
             <h3 className="text-lg">Create a Project</h3>
             <Input
