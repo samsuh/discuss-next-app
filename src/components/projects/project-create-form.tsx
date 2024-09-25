@@ -1,3 +1,6 @@
+'use client'
+
+import { useFormState } from 'react-dom'
 import {
   Button,
   Input,
@@ -9,6 +12,9 @@ import {
 import * as actions from '@/actions'
 
 export default function ProjectCreateForm() {
+  const [formState, action] = useFormState(actions.createProject, {
+    errors: {},
+  })
   return (
     <Popover placement="left">
       <PopoverTrigger>
@@ -23,13 +29,22 @@ export default function ProjectCreateForm() {
               labelPlacement="outside"
               placeholder="Name"
               name="name"
+              isInvalid={!!formState.errors.name}
+              errorMessage={formState.errors.name?.join(', ')}
             />
             <Textarea
               label="Description"
               labelPlacement="outside"
               placeholder="Describe your Project"
               name="description"
+              isInvalid={!!formState.errors.description}
+              errorMessage={formState.errors.description?.join(', ')}
             />
+            {formState.errors._form ? (
+              <div className="p-2 bg-red-200 border rounded border-red-400">
+                {formState.errors._form?.join(', ')}
+              </div>
+            ) : null}
             <Button type="submit">Submit</Button>
           </div>
         </form>
