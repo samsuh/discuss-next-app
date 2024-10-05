@@ -2,6 +2,9 @@
 
 import { auth } from '@/auth'
 import { db } from '@/db'
+import paths from '@/paths'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 //validate incoming inputs using zod
@@ -58,8 +61,26 @@ export async function createPost(
     return { errors: result.error.flatten().fieldErrors }
   }
 
-  //temp
-  return { errors: {} }
+  let post
+  try {
+    post = await db.post.create({
+      data: {
+        title: result.data.title,
+        content: result.data.content,
+        userId: session.user.id,
+        projectId: project.id,
+      },
+    })
+  } catch (error) {
+    if (error instanceof Error) {
+      return { errors: { _form: [error.message] } }
+    } else {
+      return { errors: { _form: ['Failed to create Post'] } }
+    }
+  }
+
+  revalidatePath(paths.projectShow(slug))
+  redirect(paths.postShow(slug, post.id))
 
   //todo: revalidate topicShowPage after creating a new post
 }
