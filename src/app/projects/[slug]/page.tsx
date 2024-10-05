@@ -13,7 +13,7 @@ export default function ProjectShowPage({ params }: ProjectShowPageProps) {
       <div className='col-span-3'>
         <h1 className='text-2xl font-bold mb-2'>{slug}</h1>
       </div>
-      <PostCreateForm />
+      <PostCreateForm slug={slug}/>
     </div>
   )
 }

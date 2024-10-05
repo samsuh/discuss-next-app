@@ -12,8 +12,15 @@ import {
   Textarea,
 } from '@nextui-org/react'
 
-export default function PostCreateForm() {
-  const [formState, action] = useFormState(actions.createPost, { errors: {} })
+interface PostCreateFormProps {
+  slug: string
+}
+
+export default function PostCreateForm({ slug }: PostCreateFormProps) {
+  const [formState, action] = useFormState(
+    actions.createPost.bind(null, slug),
+    { errors: {} }
+  )
 
   return (
     <Popover placement='left'>

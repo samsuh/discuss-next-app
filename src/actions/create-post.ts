@@ -1,6 +1,7 @@
 'use server'
 
 import { auth } from '@/auth'
+import { db } from '@/db'
 import { z } from 'zod'
 
 //validate incoming inputs using zod
@@ -21,28 +22,44 @@ interface CreatePostFormState {
   }
 }
 
-export async function createPost(formState: CreatePostFormState, formData: FormData): Promise<CreatePostFormState> {
+export async function createPost(
+  slug: string,
+  formState: CreatePostFormState,
+  formData: FormData
+): Promise<CreatePostFormState> {
   //how to check if user is logged in. error if not logged in trying to perform this action
   const session = await auth()
-  if (!session || !session.user){
+  if (!session || !session.user) {
     return {
       errors: {
-        _form: ['Must be logged in to perform this action']
-      }
+        _form: ['Must be logged in to perform this action'],
+      },
+    }
+  }
+
+  const project = await db.project.findFirst({
+    where: { slug },
+  })
+
+  if (!project) {
+    return {
+      errors: {
+        _form: ['Cannot find that project'],
+      },
     }
   }
 
   const result = createPostSchema.safeParse({
     title: formData.get('title'),
-    content: formData.get('content')
+    content: formData.get('content'),
   })
 
-  if (!result.success){
-    return {errors: result.error.flatten().fieldErrors}
+  if (!result.success) {
+    return { errors: result.error.flatten().fieldErrors }
   }
-  
-  //temp 
-  return {errors: {}}
+
+  //temp
+  return { errors: {} }
 
   //todo: revalidate topicShowPage after creating a new post
 }
